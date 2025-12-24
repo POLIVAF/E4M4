@@ -53,7 +53,7 @@ const obtenerComentarios = (postId, callback) => {
   }, demora);
 };
 
-//CALLBACK HELL
+//CALLBACK HELL solucion
 obtenerUsuario(1, (errorUsuario, usuario) => {
   if (errorUsuario) {
     console.error(errorUsuario);
