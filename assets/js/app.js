@@ -52,3 +52,27 @@ const obtenerComentarios = (postId, callback) => {
     callback(null, comentarios);
   }, demora);
 };
+
+//CALLBACK HELL
+obtenerUsuario(1, (errorUsuario, usuario) => {
+  if (errorUsuario) {
+    console.error(errorUsuario);
+    return;
+  }
+
+  obtenerPosts(usuario.id, (errorPosts, posts) => {
+    if (errorPosts) {
+      console.error(errorPosts);
+      return;
+    }
+
+    obtenerComentarios(posts[0].id, (errorComentarios, comentarios) => {
+      if (errorComentarios) {
+        console.error(errorComentarios);
+        return;
+      }
+
+      console.log("Comentarios obtenidos:", comentarios);
+    });
+  });
+});
