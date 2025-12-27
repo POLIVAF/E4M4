@@ -76,3 +76,89 @@ obtenerUsuario(1, (errorUsuario, usuario) => {
     });
   });
 });
+
+//Parte 2: Refactorización a Promesas
+
+// PROMESA: obtenerUsuario
+const obtenerUsuarioPromesa = (id) => {
+  return new Promise((resolve, reject) => {
+    const demora = Math.random() * 1000 + 500;
+    setTimeout(() => {
+      if (!id) {
+        reject('Error: ID de usuario no proporcionado.');
+        return;
+      }
+      console.log(`Buscando usuario con ID: ${id}...`);
+      const usuario = { id: id, nombre: 'John Doe', email: 'john.doe@example.com' };
+      resolve(usuario);
+    }, demora);
+  });
+};
+
+// PROMESA: obtenerPosts
+const obtenerPostsPromesa = (userId) => {
+  return new Promise((resolve, reject) => {
+    const demora = Math.random() * 1000 + 500;
+    setTimeout(() => {
+      if (!userId) {
+        reject('Error: ID de usuario no proporcionado para buscar posts.');
+        return;
+      }
+      console.log(`Buscando posts del usuario con ID: ${userId}...`);
+      const posts = [
+        { id: 101, titulo: 'Mi primer post', contenido: '...' },
+        { id: 102, titulo: 'Mi segundo post', contenido: '...' }
+      ];
+      resolve(posts);
+    }, demora);
+  });
+};
+
+// PROMESA: obtenerComentarios
+const obtenerComentariosPromesa = (postId) => {
+  return new Promise((resolve, reject) => {
+    const demora = Math.random() * 1000 + 500;
+    setTimeout(() => {
+      if (!postId) {
+        reject('Error: ID de post no proporcionado para buscar comentarios.');
+        return;
+      }
+      console.log(`Buscando comentarios del post con ID: ${postId}...`);
+      const comentarios = [
+        { id: 1, texto: '¡Excelente post!' },
+        { id: 2, texto: 'Muy informativo, gracias.' }
+      ];
+      resolve(comentarios);
+    }, demora);
+  });
+};
+
+// Encadenamiento con .then() y un solo .catch()
+
+obtenerUsuarioPromesa(1)
+  .then((usuario) => {
+    return obtenerPostsPromesa(usuario.id);
+  })
+  .then((posts) => {
+    return obtenerComentariosPromesa(posts[0].id);
+  })
+  .then((comentarios) => {
+    console.log("Comentarios obtenidos por then y catch:", comentarios);
+  })
+  .catch((error) => {
+    console.error("Ocurrió un error then y catch:", error);
+  });
+
+ //  PARTE 3: Solución Moderna con Async / Await
+
+ async function mostrarPerfilDeUsuario() {
+  try {
+    const usuario = await obtenerUsuarioPromesa(1);
+    const posts = await obtenerPostsPromesa(usuario.id);
+    const comentarios = await obtenerComentariosPromesa(posts[0].id);
+
+    console.log("Comentarios obtenidos por try catch:", comentarios);
+  } catch (error) {
+    console.error("Ocurrió un error por try catch:", error);
+  }
+}
